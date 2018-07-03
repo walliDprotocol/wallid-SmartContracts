@@ -36,7 +36,7 @@ contract WalletId {
         bytes32   opid
     );
     
-     /*
+    /*
         Event to request data from providers
     */
     event RequestVerifyId(
@@ -44,6 +44,17 @@ contract WalletId {
         bytes  indexed idt,
         bytes32   opid,
         bytes32   sdkey
+    );
+    
+     /*
+        Event to send data to browser!
+    */
+    event EventDataId(
+        address indexed _wallId,
+        bytes  indexed idt,
+        bytes   opid,
+        bytes   identityId,
+        bytes   veridyId
     );
 
 
@@ -106,11 +117,19 @@ contract WalletId {
         return newCount;
     }
     
-     /*
+    /*
         RequestVerifyId -> acceptedUserData
         After RequestPayment as emitted should be called acceptToken
     */
     function acceptedUserData(address tokenAdress ) public view returns(uint count) {
+        return newCount;
+    }
+    
+    /*
+        EventDataId -> acceptedUserData
+        After send data to client
+    */
+    function afterEventDataID(address tokenAdress ) public view returns(uint count) {
         return newCount;
     }
     
