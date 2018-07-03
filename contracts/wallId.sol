@@ -1,6 +1,10 @@
 pragma solidity ^0.4.0;
 contract WalletId {
 
+
+//events
+//https://ethereum.stackexchange.com/questions/15353/how-to-listen-for-contract-events-in-javascript-tests
+
     struct IdtData 
     {
         bool isValid;   //used internally to check if is alredy setted
@@ -13,7 +17,9 @@ contract WalletId {
         bytes identityId;
         bytes idt;
         bytes idtName;
-        bytes pWalletId;
+        bytes pWalletAddress;
+        bytes pName;
+        bytes pUrl;
     }
     
   
@@ -21,9 +27,19 @@ contract WalletId {
     mapping(address => IdtData) public mData;
     
     
+    event RequestPayment(
+        address indexed _wallId,
+        bytes  indexed idt,
+        bytes32 indexed  opid
+    );
+
+    
     // new function for smartcontract
-    function addInfo(bytes identityId, bytes idt, bytes idtName, bytes pWalletId) public returns (address callerAdd)
+    function addInfo(bytes identityId, bytes idt, bytes idtName, bytes pWalletAddress, bytes pName, bytes pUrl) public returns (address callerAdd)
     {
+        
+    
+        newCount++;
        
         //set entry for idt (card)
         UserData memory uData;   
@@ -32,9 +48,11 @@ contract WalletId {
         uData.identityId = identityId;
         uData.idt = idt;
         uData.idtName = idtName;
-        uData.pWalletId = pWalletId;
+        uData.pWalletAddress = pWalletAddress;
+        uData.pName = pName ;
+        uData.pUrl = pUrl;
         
-        
+    
         IdtData storage data = mData[msg.sender];
         data.isValid = true;
         
@@ -42,17 +60,36 @@ contract WalletId {
         mData[msg.sender].isValid = true;
         mData[msg.sender].idts[idt] = uData;
         
-        
-        newCount++;
             
         return msg.sender;
     }
     
-    function getIdtData(bytes idt) public view returns(bytes identityId,bytes pWalletId, bytes ridt ) {
+    /*
+    
+    
+    */
+    function getIdtData(bytes idt,  bytes32 opid) public view returns(bytes identityId,bytes pWalletAddress, bytes ridt, bytes pName, bytes pUrl) {
         IdtData storage data = mData[msg.sender];
         UserData storage uData = data.idts[idt];
         
-        return (uData.identityId, uData.pWalletId, uData.idt );
+        /*
+            emit event when request data
+         **/
+        emit RequestPayment(uData.userAddress, uData.idt, opid);
+        
+        return (uData.identityId, uData.pWalletAddress, uData.idt, uData.pName, uData.pUrl);
+    }
+    
+    function countItemList() public view returns(uint count) {
+        return newCount;
+    }
+    
+    /*
+        RequestPayment -> acceptToken
+        After RequestPayment as emitted should be called acceptToken
+    */
+    function acceptToken(address tokenAdress ) public view returns(uint count) {
+        return newCount;
     }
     
 
