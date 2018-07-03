@@ -27,11 +27,25 @@ contract WalletId {
     mapping(address => IdtData) public mData;
     
     
+    /*
+        Event to request Payment Tokens
+    */
     event RequestPayment(
         address indexed _wallId,
         bytes  indexed idt,
-        bytes32 indexed  opid
+        bytes32   opid
     );
+    
+     /*
+        Event to request data from providers
+    */
+    event RequestVerifyId(
+        address indexed _wallId,
+        bytes  indexed idt,
+        bytes32   opid,
+        bytes32   sdkey
+    );
+
 
     
     // new function for smartcontract
@@ -85,12 +99,21 @@ contract WalletId {
     }
     
     /*
-        RequestPayment -> acceptToken
+        RequestPayment -> acceptedToken
         After RequestPayment as emitted should be called acceptToken
     */
-    function acceptToken(address tokenAdress ) public view returns(uint count) {
+    function acceptedToken(address tokenAdress ) public view returns(uint count) {
         return newCount;
     }
+    
+     /*
+        RequestVerifyId -> acceptedUserData
+        After RequestPayment as emitted should be called acceptToken
+    */
+    function acceptedUserData(address tokenAdress ) public view returns(uint count) {
+        return newCount;
+    }
+    
     
 
 
