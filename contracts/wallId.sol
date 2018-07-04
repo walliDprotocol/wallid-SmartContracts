@@ -19,6 +19,7 @@ contract WalletId {
         bytes idtName;
         bytes pWalletAddress;
         bytes pName;
+        bytes sdkey;
         bytes pUrl;
     }
     
@@ -52,7 +53,7 @@ contract WalletId {
     event EventDataId(
         address indexed _wallId,
         bytes  indexed idt,
-        bytes   opid,
+        bytes32   opid,
         bytes   identityId,
         bytes   veridyId
     );
@@ -60,7 +61,7 @@ contract WalletId {
 
     
     // new function for smartcontract
-    function addInfo(bytes identityId, bytes idt, bytes idtName, bytes pWalletAddress, bytes pName, bytes pUrl) public returns (address callerAdd)
+    function addInfo(bytes identityId, bytes idt, bytes idtName, bytes pWalletAddress, bytes pName, bytes pUrl, bytes opid, bytes sdkey) public returns (address callerAdd)
     {
         
     
@@ -93,7 +94,14 @@ contract WalletId {
     
     
     */
-    function getIdtData(bytes idt,  bytes32 opid) public view returns(bytes identityId,bytes pWalletAddress, bytes ridt, bytes pName, bytes pUrl) {
+    function getIdtData(bytes idt,  bytes32 opid) public view  returns(bytes ridentityId,bytes rpWalletId, bytes ridt) {
+       IdtData storage data = mData[msg.sender];
+        UserData storage uData = data.idts[idt];
+        
+        return (uData.identityId, uData.pWalletAddress, uData.idt);
+    }
+    
+     function getIdtDataVerified(bytes idt,  bytes32 opid) public  returns(bool ret) {
         IdtData storage data = mData[msg.sender];
         UserData storage uData = data.idts[idt];
         
@@ -102,7 +110,7 @@ contract WalletId {
          **/
         emit RequestPayment(uData.userAddress, uData.idt, opid);
         
-        return (uData.identityId, uData.pWalletAddress, uData.idt, uData.pName, uData.pUrl);
+        return true;
     }
     
     function countItemList() public view returns(uint count) {
@@ -113,27 +121,19 @@ contract WalletId {
         RequestPayment -> acceptedToken
         After RequestPayment as emitted should be called acceptToken
     */
-    function acceptedToken(address tokenAdress ) public view returns(uint count) {
-        return newCount;
+    function acceptedToken(address userAddress, bytes idt, bytes32 opid , bytes32 sdkey ) public  returns(bool ret) 
+    {
+        emit RequestVerifyId(userAddress, idt, opid, sdkey);
+        return true;
     }
     
     /*
         RequestVerifyId -> acceptedUserData
         After RequestPayment as emitted should be called acceptToken
     */
-    function acceptedUserData(address tokenAdress ) public view returns(uint count) {
-        return newCount;
+    function acceptedUserData(address userAddress, bytes idt, bytes32 opid , bytes identityId, bytes verifyId ) public  returns(bool ret) {
+        emit EventDataId(userAddress, idt, opid, identityId,verifyId );
+        return true;
     }
     
-    /*
-        EventDataId -> acceptedUserData
-        After send data to client
-    */
-    function afterEventDataID(address tokenAdress ) public view returns(uint count) {
-        return newCount;
-    }
-    
-    
-
-
 }
