@@ -42,8 +42,8 @@ contract WalletId {
         Event to request data from providers
     */
     event RequestVerifyId(
-        address indexed _wallId,
-        bytes  indexed idt,
+        address  _wallId,
+        bytes   idt,
         uint   opid,
         bytes   sdkey
     );
@@ -52,8 +52,8 @@ contract WalletId {
         Event to send data to browser!
     */
     event EventDataId(
-        address indexed _wallId,
-        bytes  indexed idt,
+        address  _wallId,
+        bytes  idt,
         uint   opid,
         bytes   identityId,
         bytes   veridyId
@@ -134,8 +134,11 @@ contract WalletId {
         RequestVerifyId -> acceptedUserData
         After RequestPayment as emitted should be called acceptToken
     */
-    function acceptedUserData(address userAddress, bytes idt, uint opid , bytes identityId, bytes verifyId ) public  returns(bool ret) {
-        emit EventDataId(userAddress, idt, opid, identityId,verifyId );
+    function acceptedUserData(address userAddress, bytes idt, uint opid , bytes verifyId ) public  returns(bool ret) {
+        IdtData storage data = mData[msg.sender];
+        UserData storage uData = data.idts[idt];
+        
+        emit EventDataId(userAddress, idt, opid, uData.identityId ,verifyId );
         return true;
     }
     
