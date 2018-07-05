@@ -21,6 +21,7 @@ contract WalletId {
         bytes pName;
         bytes sdkey;
         bytes pUrl;
+        uint opid;
     }
     
   
@@ -32,9 +33,9 @@ contract WalletId {
         Event to request Payment Tokens
     */
     event RequestPayment(
-        address indexed _wallId,
-        bytes  indexed idt,
-        bytes32   opid
+        address  _wallId,
+        bytes   idt,
+        uint   opid
     );
     
     /*
@@ -43,8 +44,8 @@ contract WalletId {
     event RequestVerifyId(
         address indexed _wallId,
         bytes  indexed idt,
-        bytes32   opid,
-        bytes32   sdkey
+        uint   opid,
+        bytes   sdkey
     );
     
      /*
@@ -53,7 +54,7 @@ contract WalletId {
     event EventDataId(
         address indexed _wallId,
         bytes  indexed idt,
-        bytes32   opid,
+        uint   opid,
         bytes   identityId,
         bytes   veridyId
     );
@@ -61,7 +62,7 @@ contract WalletId {
 
     
     // new function for smartcontract
-    function addInfo(bytes identityId, bytes idt, bytes idtName, bytes pWalletAddress, bytes pName, bytes pUrl, bytes opid, bytes sdkey) public returns (address callerAdd)
+    function addInfo(bytes identityId, bytes idt, bytes idtName, bytes pWalletAddress, bytes pName, bytes pUrl, uint opid, bytes sdkey) public returns (address callerAdd)
     {
         
     
@@ -73,11 +74,13 @@ contract WalletId {
         uData.userAddress = msg.sender;
         uData.identityId = identityId;
         uData.idt = idt;
+        uData.opid = opid;
+        uData.sdkey = sdkey;
+        
         uData.idtName = idtName;
         uData.pWalletAddress = pWalletAddress;
         uData.pName = pName ;
         uData.pUrl = pUrl;
-        
     
         IdtData storage data = mData[msg.sender];
         data.isValid = true;
@@ -94,21 +97,21 @@ contract WalletId {
     
     
     */
-    function getIdtData(bytes idt,  bytes32 opid) public view  returns(bytes ridentityId,bytes rpWalletId, bytes ridt) {
+    function getIdtData(bytes idt,  bytes opid) public view  returns(bytes ridentityId,bytes rpWalletId, bytes ridt, bytes ropid) {
        IdtData storage data = mData[msg.sender];
         UserData storage uData = data.idts[idt];
         
-        return (uData.identityId, uData.pWalletAddress, uData.idt);
+        return (uData.identityId, uData.pWalletAddress, uData.idt, opid);
     }
     
-     function getIdtDataVerified(bytes idt,  bytes32 opid) public  returns(bool ret) {
+     function getIdtDataVerified(bytes idt,  uint opid) public  returns(bool ret) {
         IdtData storage data = mData[msg.sender];
         UserData storage uData = data.idts[idt];
         
         /*
-            emit event when request data
+            emit event when request data uData.idt
          **/
-        emit RequestPayment(uData.userAddress, uData.idt, opid);
+        emit RequestPayment(uData.userAddress, idt, opid);
         
         return true;
     }
@@ -121,7 +124,7 @@ contract WalletId {
         RequestPayment -> acceptedToken
         After RequestPayment as emitted should be called acceptToken
     */
-    function acceptedToken(address userAddress, bytes idt, bytes32 opid , bytes32 sdkey ) public  returns(bool ret) 
+    function acceptedToken(address userAddress, bytes idt, uint opid , bytes sdkey ) public  returns(bool ret) 
     {
         emit RequestVerifyId(userAddress, idt, opid, sdkey);
         return true;
@@ -131,9 +134,13 @@ contract WalletId {
         RequestVerifyId -> acceptedUserData
         After RequestPayment as emitted should be called acceptToken
     */
-    function acceptedUserData(address userAddress, bytes idt, bytes32 opid , bytes identityId, bytes verifyId ) public  returns(bool ret) {
+    function acceptedUserData(address userAddress, bytes idt, uint opid , bytes identityId, bytes verifyId ) public  returns(bool ret) {
         emit EventDataId(userAddress, idt, opid, identityId,verifyId );
         return true;
     }
     
+  
+   
+
+
 }
