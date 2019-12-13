@@ -21,7 +21,7 @@
     "install": "^0.10.4",
     "node-forge": "^0.7.5",
     "node-rsa": "^0.4.2",
-    "npm": "^5.10.0",
+    "npm": "^6.13.4",
     "openssl-wrapper": "^0.3.4",
     "truffle-contract": "^3.0.5",
     "web3": "^0.20.6"
