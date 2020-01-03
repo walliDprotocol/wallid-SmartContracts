@@ -69,11 +69,13 @@ contract WalletIdHydrid
     *   https://medium.com/coinmonks/solidity-tutorial-returning-structs-from-public-functions-e78e48efb378
     * 
     **/
-   function getUserBlock(uint256 uIdx, bytes32 idt, uint8 idx) external view returns (uint256 sucess, bytes memory uBlock, uint256 o_uIdx, bytes32 o_sid,  bytes32 o_idt)
+   function getUserBlock(uint256 uIdx, uint nonce , bytes32 idt, uint8 idx) external view returns (uint256 sucess, bytes memory uBlock, uint256 o_uIdx, bytes32 o_sid,  bytes32 o_idt)
    {
-    
+       
+       uint uIdxnDec = decodeIdx(uIdx, nonce);
+        
        //Getting all idt's for an wallet address
-       IdtData  storage _idtDataTmp =  _identities[uIdx];
+       IdtData  storage _idtDataTmp =  _identities[uIdxnDec];
        //Getting user idt_type data
        UserData storage uBlockData = _idtDataTmp.idt_type[idt];
        
@@ -87,12 +89,12 @@ contract WalletIdHydrid
    }
    
    
-   function decodeIdx (uint256 idxN, uint nounce) public view returns (uint) {
+   function decodeIdx (uint256 idxN, uint nonce) public view returns (uint) {
         uint ts = now * 1000;
         
         uint adj_ts = (ts - ts % DriftPeriod);
         
-        uint idxOffset = adj_ts * (nounce - nounce % adj_ts);
+        uint idxOffset = adj_ts * (nonce - nonce % adj_ts);
         
         return idxN - idxOffset;
     }
@@ -103,5 +105,8 @@ contract WalletIdHydrid
      return dataInsertions;
     }
     
+
+   
+
     
 }
