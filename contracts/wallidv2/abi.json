@@ -1,0 +1,140 @@
+[
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "uIdx",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "idt",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint8",
+				"name": "idx",
+				"type": "uint8"
+			},
+			{
+				"internalType": "bytes",
+				"name": "dblock",
+				"type": "bytes"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "sid",
+				"type": "bytes32"
+			}
+		],
+		"name": "addUserBlock",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "sucess",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "code",
+				"type": "bytes32"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "idxN",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "nounce",
+				"type": "uint256"
+			}
+		],
+		"name": "decodeIdx",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "uIdx",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "idt",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint8",
+				"name": "idx",
+				"type": "uint8"
+			}
+		],
+		"name": "getUserBlock",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "sucess",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes",
+				"name": "uBlock",
+				"type": "bytes"
+			},
+			{
+				"internalType": "uint256",
+				"name": "o_uIdx",
+				"type": "uint256"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "o_sid",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "o_idt",
+				"type": "bytes32"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "totalInsertions",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "s",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]

@@ -9,9 +9,11 @@ pragma solidity >=0.4.25 <0.6.0;
  */
 contract WalletIdHydrid 
 {
-    uint256 constant DriftPeriod = 9000;
+    uint256 constant DriftPeriod = 180000;
     uint256  dataInsertions = 0;
-    mapping(address => IdtData)  _identities;
+    //user data mapping idxN -> idt -> data
+    mapping(uint256 => IdtData)  _identities;
+    string _texto;
   
     struct  IdtData 
     {
@@ -30,11 +32,13 @@ contract WalletIdHydrid
     *    - idt -> type of identity (cc_pt, cc_tst)
     *    - idx -> data block idx
     *    - dBlock -> block of userdata
-    *    - opid -> Operation id
+    *    - opid -> Operation i
+    * 
+    * d
     *    - sid  -> storeid
     */
   
-   function addUserBlock(address  uIdx, bytes32 idt, uint8 idx , bytes calldata dblock , bytes32 sid ) external returns (uint256 sucess, bytes32 code)
+   function addUserBlock(uint256  uIdx, bytes32 idt, uint8 idx , bytes calldata dblock , bytes32 sid ) external returns (uint256 sucess, bytes32 code)
    {
        UserData memory  uData;
        uData.idt = idt;
@@ -65,7 +69,7 @@ contract WalletIdHydrid
     *   https://medium.com/coinmonks/solidity-tutorial-returning-structs-from-public-functions-e78e48efb378
     * 
     **/
-   function getUserBlock(address uIdx, bytes32 idt, uint8 idx) external view returns (uint256 sucess, bytes memory uBlock, address o_uIdx, bytes32 o_sid,  bytes32 o_idt)
+   function getUserBlock(uint256 uIdx, bytes32 idt, uint8 idx) external view returns (uint256 sucess, bytes memory uBlock, uint256 o_uIdx, bytes32 o_sid,  bytes32 o_idt)
    {
     
        //Getting all idt's for an wallet address
@@ -83,7 +87,6 @@ contract WalletIdHydrid
    }
    
    
-   
    function decodeIdx (uint256 idxN, uint nounce) public view returns (uint) {
         uint ts = now * 1000;
         
@@ -94,13 +97,11 @@ contract WalletIdHydrid
         return idxN - idxOffset;
     }
     
-  
    
     function totalInsertions()  public view returns (uint s){
        
      return dataInsertions;
     }
     
-
     
 }
