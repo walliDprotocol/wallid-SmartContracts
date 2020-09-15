@@ -19,7 +19,7 @@
   "dependencies": {
     "convert-string": "^0.1.0",
     "install": "^0.10.4",
-    "node-forge": "^0.7.5",
+    "node-forge": "^0.10.0",
     "node-rsa": "^0.4.2",
     "npm": "^5.10.0",
     "openssl-wrapper": "^0.3.4",
